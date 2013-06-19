@@ -483,7 +483,6 @@ void apply_filter(Src & src, colorize_alpha const& op)
     }
 }
 
-/*
 template <typename Src>
 void apply_filter(Src & src, hsla const& transform)
 {
@@ -573,7 +572,6 @@ void apply_filter(Src & src, hsla const& transform)
         }
     }
 }
-*/
 
 template <typename Src>
 void apply_filter(Src & src, gray const& op)
