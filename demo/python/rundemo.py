@@ -352,6 +352,15 @@ images_.append('demo_low.jpg')
 im.save('demo.tif', 'tiff')
 images_.append('demo.tif')
 
+im.save('demo.webp', 'webp')
+images_.append('demo.webp')
+
+im.save('demo_med.webp', 'webp:quality=80')
+images_.append('demo_med.webp')
+
+im.save('demo_low.webp', 'webp:quality=50')
+images_.append('demo_low.webp')
+
 # Render cairo examples
 if HAS_PYCAIRO_MODULE and mapnik.has_pycairo():
 

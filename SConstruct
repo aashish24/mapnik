@@ -73,6 +73,7 @@ pretty_dep_names = {
     'jpeg':'JPEG C library | configure with JPEG_LIBS & JPEG_INCLUDES',
     'tiff':'TIFF C library | configure with TIFF_LIBS & TIFF_INCLUDES',
     'png':'PNG C library | configure with PNG_LIBS & PNG_INCLUDES',
+    'webp':'WEBP C library | configure with WEBP_LIBS & WEBP_INCLUDES',
     'icuuc':'ICU C++ library | configure with ICU_LIBS & ICU_INCLUDES or use ICU_LIB_NAME to specify custom lib name  | more info: http://site.icu-project.org/',
     'z':'Z compression library | more info: http://www.zlib.net/',
     'm':'Basic math library, part of C++ stlib',
@@ -325,6 +326,9 @@ opts.AddVariables(
     BoolVariable('TIFF', 'Build Mapnik with TIFF read and write support', 'True'),
     PathVariable('TIFF_INCLUDES', 'Search path for libtiff include files', '/usr/include', PathVariable.PathAccept),
     PathVariable('TIFF_LIBS', 'Search path for libtiff library files', '/usr/' + LIBDIR_SCHEMA_DEFAULT, PathVariable.PathAccept),
+    BoolVariable('WEBP', 'Build Mapnik with WEBP read', 'False'),
+    PathVariable('WEBP_INCLUDES', 'Search path for libwebp include files', '/usr/include', PathVariable.PathAccept),
+    PathVariable('WEBP_LIBS','Search path for libwebp library files','/usr/' + LIBDIR_SCHEMA_DEFAULT, PathVariable.PathAccept),
     BoolVariable('PROJ', 'Build Mapnik with proj4 support to enable transformations between many different projections', 'True'),
     PathVariable('PROJ_INCLUDES', 'Search path for PROJ.4 include files', '/usr/include', PathVariable.PathAccept),
     PathVariable('PROJ_LIBS', 'Search path for PROJ.4 library files', '/usr/' + LIBDIR_SCHEMA_DEFAULT, PathVariable.PathAccept),
@@ -1212,6 +1216,16 @@ if not preconfigured:
         env.AppendUnique(LIBPATH = os.path.realpath(lib_path))
     else:
         env['SKIPPED_DEPS'].extend(['png'])
+
+    if env['WEBP']:
+        env.Append(CPPDEFINES = '-DHAVE_WEBP')
+        LIBSHEADERS.append(['webp', 'webp/decode.h', True,'C'])
+        inc_path = env['%s_INCLUDES' % 'WEBP']
+        lib_path = env['%s_LIBS' % 'WEBP']
+        env.AppendUnique(CPPPATH = os.path.realpath(inc_path))
+        env.AppendUnique(LIBPATH = os.path.realpath(lib_path))
+    else:
+        env['SKIPPED_DEPS'].extend(['webp'])
 
     if env['TIFF']:
         env.Append(CPPDEFINES = '-DHAVE_TIFF')
