@@ -271,7 +271,7 @@ if env['PNG']:
         png_reader.cpp
         """)
 
-if env['TIFF']:
+if env['WEBP']:
     source += Split(
         """
         webp_reader.cpp
