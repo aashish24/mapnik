@@ -36,7 +36,7 @@ static inline void rgb2hsl(unsigned char red, unsigned char green, unsigned char
     double min = std::min(r,std::min(g,b));
     double delta = max - min;
     double gamma = max + min;
-    h = s = l = gamma / 2.0;
+    h = 0.0, s = 0.0, l = gamma / 2.0;
     if (delta > 0.0) {
         s = l > 0.5 ? delta / (2.0 - gamma) : delta / gamma;
         if (max == r && max != g) h = (g - b) / delta + (g < b ? 6.0 : 0.0);
@@ -47,7 +47,6 @@ static inline void rgb2hsl(unsigned char red, unsigned char green, unsigned char
 }
 
 static inline double hueToRGB(double m1, double m2, double h) {
-    // poor mans fmod
     if(h < 0) h += 1;
     if(h > 1) h -= 1;
     if (h * 6 < 1) return m1 + (m2 - m1) * h * 6;
