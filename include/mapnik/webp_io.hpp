@@ -74,8 +74,16 @@ void save_as_webp(T1& file,
 
     // Add additional tuning
     if (method >= 0) config.method = method;
+    #if (WEBP_ENCODER_ABI_VERSION >> 8) >= 2
     config.lossless = lossless;
     config.image_hint = static_cast<WebPImageHint>(image_hint);
+    #else
+        #ifdef _MSC_VER
+        #pragma NOTE(compiling against webp that does not support lossless flag)
+        #else
+        #warning "compiling against webp that does not support lossless flag"
+        #endif
+    #endif
 
     bool valid = WebPValidateConfig(&config);
     if (!valid) {
@@ -89,7 +97,9 @@ void save_as_webp(T1& file,
     }
     pic.width = image.width();
     pic.height = image.height();
+    #if (WEBP_ENCODER_ABI_VERSION >> 8) >= 2
     pic.use_argb = 1;
+    #endif
     if (!WebPPictureAlloc(&pic))
     {
         throw std::runtime_error("memory error");
